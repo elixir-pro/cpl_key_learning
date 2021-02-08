@@ -2,6 +2,13 @@ defmodule KeyLearning.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  import EctoEnum
+
+  defenum(RolesEnum, :role, [
+    :user,
+    :admin
+  ])
+
   @derive {Inspect, except: [:password]}
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
@@ -10,6 +17,7 @@ defmodule KeyLearning.Accounts.User do
     field :password, :string, virtual: true
     field :hashed_password, :string
     field :confirmed_at, :naive_datetime
+    field :role, RolesEnum, default: :user
 
     timestamps()
   end
@@ -36,6 +44,14 @@ defmodule KeyLearning.Accounts.User do
     |> cast(attrs, [:email, :password])
     |> validate_email()
     |> validate_password(opts)
+  end
+
+  def admin_registration_changeset(user, attrs, opts \\ []) do
+    user
+    |> cast(attrs, [:email, :password])
+    |> validate_email()
+    |> validate_password(opts)
+    |> put_change(:role, :admin)
   end
 
   defp validate_email(changeset) do

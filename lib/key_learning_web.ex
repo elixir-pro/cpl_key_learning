@@ -48,6 +48,8 @@ defmodule KeyLearningWeb do
         layout: {KeyLearningWeb.LayoutView, "live.html"}
 
       unquote(view_helpers())
+
+      import KeyLearningWeb.LiveHelpers
     end
   end
 

@@ -4,6 +4,7 @@ defmodule KeyLearningWeb.Router do
   import KeyLearningWeb.UserAuth
 
   alias KeyLearningWeb.AuthAccessPipelinePlug
+  alias KeyLearningWeb.EnsureRolePlug
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -13,6 +14,14 @@ defmodule KeyLearningWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :fetch_current_user
+  end
+
+  pipeline :user do
+    plug EnsureRolePlug, [:admin, :user]
+  end
+
+  pipeline :admin do
+    plug EnsureRolePlug, [:admin]
   end
 
   pipeline :api do
@@ -28,7 +37,6 @@ defmodule KeyLearningWeb.Router do
     pipe_through :browser
 
     live "/", CategoryLive, :index
-    live "/course", CourseLive, :index
   end
 
   # Other scopes may use custom stacks.
@@ -91,5 +99,10 @@ defmodule KeyLearningWeb.Router do
     get "/users/confirm", UserConfirmationController, :new
     post "/users/confirm", UserConfirmationController, :create
     get "/users/confirm/:token", UserConfirmationController, :confirm
+  end
+
+  scope "/", KeyLearningWeb do
+    pipe_through [:browser, :require_authenticated_user, :user]
+    live "/course", CourseLive, :index
   end
 end

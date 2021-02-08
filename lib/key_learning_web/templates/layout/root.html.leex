@@ -14,7 +14,8 @@
 </head>
 
 <body>
-  <%#= render "_user_menu.html", assigns %>
+  <%= render "_user_menu.html", assigns %>
+  <%= link "course", to: "/course" %>
   <%= @inner_content %>
 </body>
 
