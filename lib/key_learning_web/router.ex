@@ -29,7 +29,7 @@ defmodule KeyLearningWeb.Router do
 
   pipeline :api_authenticated do
     plug :accepts, ["json"]
-    plug AuthAccessPipelinePlug
+    # plug AuthAccessPipelinePlug
   end
 
   scope "/", KeyLearningWeb do
