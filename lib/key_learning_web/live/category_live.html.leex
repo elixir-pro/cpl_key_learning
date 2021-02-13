@@ -7,8 +7,13 @@
         <p><i class="fas fa-power-off"></i></p>
       </div>
 
-      <form action="">
-        <input type="search" placeholder="Type to find a course">
+      <form phx-change="search" action="">
+            <input  type="search"
+                name="search"
+                value="<%= @search %>"
+                autocomplete="off"
+                <%= if @loading, do: "readonly" %>
+                placeholder="Type to find a course">
       </form>
     </nav>
   </header>
@@ -16,8 +21,12 @@
   <main>
     <h3>
       <span>Categories</span>
-      <p>30 courses</p>
+      <p><%= length(@courses) %> courses</p>
     </h3>
+
+    <%= if @loading do %>
+      Loading courses...
+    <% end %>
 
 
     <section class="categories">
@@ -26,7 +35,7 @@
         <img src="<%= course.image_path %>" alt="<%= course.name %>">
         <span><%= course.name %>
         </span>
-        <p>20 lessons</p>
+        <p><%= course.lectures %> lessons</p>
       </div>
       <% end %>
     </section>
