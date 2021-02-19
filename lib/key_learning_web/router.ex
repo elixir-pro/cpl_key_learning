@@ -35,6 +35,8 @@ defmodule KeyLearningWeb.Router do
   scope "/", KeyLearningWeb do
     pipe_through :browser
 
+    live "/lesson/:id", LessonLive, :index
+    live "/course/:id", CourseLive, :index
     live "/", CategoryLive, :index
   end
 
